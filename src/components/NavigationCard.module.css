@@ -1,0 +1,206 @@
+.card {
+  display: block;
+  text-decoration: none;
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  transition: all 0.3s ease;
+}
+
+.blue::before {
+  background: linear-gradient(90deg, #4299e1, #3182ce);
+}
+
+.green::before {
+  background: linear-gradient(90deg, #48bb78, #38a169);
+}
+
+.purple::before {
+  background: linear-gradient(90deg, #9f7aea, #805ad5);
+}
+
+.cardContent {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  position: relative;
+}
+
+.iconContainer {
+  flex-shrink: 0;
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  transition: all 0.3s ease;
+}
+
+.blue .iconContainer {
+  background: linear-gradient(135deg, #ebf8ff, #bee3f8);
+  color: #3182ce;
+}
+
+.green .iconContainer {
+  background: linear-gradient(135deg, #f0fff4, #c6f6d5);
+  color: #38a169;
+}
+
+.purple .iconContainer {
+  background: linear-gradient(135deg, #faf5ff, #e9d8fd);
+  color: #805ad5;
+}
+
+.card:hover .iconContainer {
+  transform: scale(1.1);
+}
+
+.textContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #2d3748;
+  margin: 0 0 8px 0;
+  line-height: 1.3;
+}
+
+.description {
+  color: #4a5568;
+  margin: 0 0 16px 0;
+  line-height: 1.5;
+  font-size: 0.95rem;
+}
+
+.flagInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.flagDetail {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+}
+
+.flagLabel {
+  color: #718096;
+  font-weight: 500;
+  min-width: 35px;
+}
+
+.flagName {
+  background: #f7fafc;
+  color: #2d3748;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 0.8rem;
+  border: 1px solid #e2e8f0;
+}
+
+.flagType {
+  color: #4a5568;
+  font-weight: 500;
+}
+
+.arrow {
+  flex-shrink: 0;
+  font-size: 1.5rem;
+  color: #a0aec0;
+  transition: all 0.3s ease;
+  align-self: center;
+}
+
+.card:hover .arrow {
+  color: #4a5568;
+  transform: translateX(4px);
+}
+
+.blue:hover .arrow {
+  color: #3182ce;
+}
+
+.green:hover .arrow {
+  color: #38a169;
+}
+
+.purple:hover .arrow {
+  color: #805ad5;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .card {
+    padding: 20px;
+  }
+  
+  .cardContent {
+    gap: 16px;
+  }
+  
+  .iconContainer {
+    width: 50px;
+    height: 50px;
+    font-size: 1.5rem;
+  }
+  
+  .title {
+    font-size: 1.2rem;
+  }
+  
+  .description {
+    font-size: 0.9rem;
+  }
+  
+  .flagInfo {
+    gap: 4px;
+  }
+  
+  .flagDetail {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .cardContent {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .arrow {
+    align-self: center;
+    transform: rotate(90deg);
+  }
+  
+  .card:hover .arrow {
+    transform: rotate(90deg) translateX(4px);
+  }
+}
+

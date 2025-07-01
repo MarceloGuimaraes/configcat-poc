@@ -1,0 +1,34 @@
+{
+  "recommendations": [
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint",
+    "bradlc.vscode-tailwindcss",
+    "ms-vscode.vscode-typescript-next",
+    "formulahendry.auto-rename-tag",
+    "christian-kohler.path-intellisense",
+    "ms-vscode.vscode-json",
+    "PKief.material-icon-theme",
+    "zhuangtongfa.material-theme",
+    "ritwickdey.LiveServer",
+    "ms-vscode.vscode-css-peek",
+    "bradlc.vscode-tailwindcss",
+    "steoates.autoimport-es6-ts",
+    "ms-vscode.vscode-typescript-next",
+    "usernamehw.errorlens",
+    "ms-vscode.vscode-eslint",
+    "ms-vscode.vscode-json",
+    "ms-vscode.vscode-typescript-next",
+    "ms-vscode.vscode-css-peek",
+    "ms-vscode.vscode-html-css-support",
+    "ms-vscode.vscode-emmet",
+    "ms-vscode.vscode-intellicode",
+    "ms-vscode.vscode-git-graph",
+    "ms-vscode.vscode-github-pullrequest",
+    "ms-vscode.vscode-github-issue-notebooks"
+  ],
+  "unwantedRecommendations": [
+    "ms-vscode.vscode-typescript",
+    "hookyqr.beautify"
+  ]
+}
+
