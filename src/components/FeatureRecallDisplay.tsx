@@ -1,10 +1,10 @@
 'use client';
 
-import React, { useState } from 'react';
-import * as configcat from 'configcat-js';
 import { useFeatureRecall } from '@/hooks/useConfigCat';
-import { createUserObject } from '@/lib/configcat';
+import { createUserObject, forceRefreshFeatureFlags } from '@/lib/configcat';
 import { usePersistentUserId } from '@/utils/userUtils';
+import * as configcat from 'configcat-js';
+import React, { useState } from 'react';
 import styles from './FeatureRecallDisplay.module.css';
 
 /**
@@ -64,7 +64,13 @@ export default function FeatureRecallDisplay() {
       <div className={styles.header}>
         <h2 className={styles.title}>Feature Flag - Recall de Produtos</h2>
         <div className={styles.controls}>
-          <button onClick={refetch} className={styles.refreshButton}>
+          <button
+            onClick={async () => {
+              await forceRefreshFeatureFlags();
+              refetch();
+            }}
+            className={styles.refreshButton}
+          >
             Atualizar
           </button>
           <button onClick={generateNewUser} className={styles.newUserButton}>
@@ -74,9 +80,16 @@ export default function FeatureRecallDisplay() {
       </div>
 
       <div className={styles.userInfo}>
-        <p><strong>ID do Usuário:</strong> {userId}</p>
-        <p><strong>Feature Status:</strong> 
-          <span className={`${styles.status} ${isEnabled ? styles.statusEnabled : styles.statusDisabled}`}>
+        <p>
+          <strong>ID do Usuário:</strong> {userId}
+        </p>
+        <p>
+          <strong>Feature Status:</strong>
+          <span
+            className={`${styles.status} ${
+              isEnabled ? styles.statusEnabled : styles.statusDisabled
+            }`}
+          >
             {isEnabled ? 'Habilitada' : 'Desabilitada'}
           </span>
         </p>
@@ -96,8 +109,8 @@ export default function FeatureRecallDisplay() {
               <div className={styles.alertContent}>
                 <h4 className={styles.alertTitle}>Aviso Importante de Recall</h4>
                 <p className={styles.alertText}>
-                  Alguns produtos foram identificados com problemas de qualidade. 
-                  Verifique se você possui algum dos itens listados abaixo.
+                  Alguns produtos foram identificados com problemas de qualidade. Verifique se você
+                  possui algum dos itens listados abaixo.
                 </p>
               </div>
             </div>
@@ -112,9 +125,7 @@ export default function FeatureRecallDisplay() {
                     <p className={styles.productIssue}>Problema: Superaquecimento da bateria</p>
                     <p className={styles.productAction}>Ação: Pare de usar imediatamente</p>
                   </div>
-                  <button className={styles.recallButton}>
-                    Solicitar Troca
-                  </button>
+                  <button className={styles.recallButton}>Solicitar Troca</button>
                 </div>
 
                 <div className={styles.recallProduct}>
@@ -124,9 +135,7 @@ export default function FeatureRecallDisplay() {
                     <p className={styles.productIssue}>Problema: Falha no isolamento elétrico</p>
                     <p className={styles.productAction}>Ação: Retornar para análise</p>
                   </div>
-                  <button className={styles.recallButton}>
-                    Solicitar Troca
-                  </button>
+                  <button className={styles.recallButton}>Solicitar Troca</button>
                 </div>
               </div>
             </div>
@@ -134,7 +143,7 @@ export default function FeatureRecallDisplay() {
             <div className={styles.contactInfo}>
               <h5 className={styles.contactTitle}>Precisa de Ajuda?</h5>
               <p className={styles.contactText}>
-                Entre em contato conosco pelo telefone <strong>0800-123-4567</strong> 
+                Entre em contato conosco pelo telefone <strong>0800-123-4567</strong>
                 ou email <strong>recall@empresa.com</strong>
               </p>
             </div>
@@ -154,9 +163,7 @@ export default function FeatureRecallDisplay() {
                   <p className={styles.productPrice}>R$ 1.299,00</p>
                   <p className={styles.productDescription}>Tecnologia avançada e design moderno</p>
                 </div>
-                <button className={styles.buyButton}>
-                  Comprar Agora
-                </button>
+                <button className={styles.buyButton}>Comprar Agora</button>
               </div>
 
               <div className={styles.normalProduct}>
@@ -166,9 +173,7 @@ export default function FeatureRecallDisplay() {
                   <p className={styles.productPrice}>R$ 299,00</p>
                   <p className={styles.productDescription}>Som cristalino e conforto superior</p>
                 </div>
-                <button className={styles.buyButton}>
-                  Comprar Agora
-                </button>
+                <button className={styles.buyButton}>Comprar Agora</button>
               </div>
             </div>
           </div>
@@ -188,4 +193,3 @@ export default function FeatureRecallDisplay() {
     </div>
   );
 }
-

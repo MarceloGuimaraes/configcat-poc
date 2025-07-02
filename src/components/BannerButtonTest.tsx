@@ -1,10 +1,10 @@
 'use client';
 
-import React, { useState } from 'react';
-import * as configcat from 'configcat-js';
 import { useBannerButtonTest } from '@/hooks/useConfigCat';
-import { createUserObject } from '@/lib/configcat';
+import { createUserObject, forceRefreshFeatureFlags } from '@/lib/configcat';
 import { usePersistentUserId } from '@/utils/userUtils';
+import * as configcat from 'configcat-js';
+import React, { useState } from 'react';
 import styles from './BannerButtonTest.module.css';
 
 /**
@@ -64,7 +64,13 @@ export default function BannerButtonTest() {
       <div className={styles.header}>
         <h2 className={styles.title}>Teste A/B - Botão Promocional</h2>
         <div className={styles.controls}>
-          <button onClick={refetch} className={styles.refreshButton}>
+          <button
+            onClick={async () => {
+              await forceRefreshFeatureFlags();
+              refetch();
+            }}
+            className={styles.refreshButton}
+          >
             Atualizar
           </button>
           <button onClick={generateNewUser} className={styles.newUserButton}>
@@ -74,9 +80,16 @@ export default function BannerButtonTest() {
       </div>
 
       <div className={styles.userInfo}>
-        <p><strong>ID do Usuário:</strong> {userId}</p>
-        <p><strong>Variação Ativa:</strong> 
-          <span className={`${styles.variant} ${isEnabled ? styles.variantEnabled : styles.variantDisabled}`}>
+        <p>
+          <strong>ID do Usuário:</strong> {userId}
+        </p>
+        <p>
+          <strong>Variação Ativa:</strong>
+          <span
+            className={`${styles.variant} ${
+              isEnabled ? styles.variantEnabled : styles.variantDisabled
+            }`}
+          >
             {isEnabled ? 'Habilitado' : 'Desabilitado'}
           </span>
         </p>
@@ -95,16 +108,12 @@ export default function BannerButtonTest() {
             <div className={styles.promotionContent}>
               <h4 className={styles.promotionTitle}>🎉 Oferta Especial Ativa!</h4>
               <p className={styles.promotionText}>
-                Aproveite 50% de desconto em todos os produtos premium. 
-                Oferta válida apenas para usuários selecionados!
+                Aproveite 50% de desconto em todos os produtos premium. Oferta válida apenas para
+                usuários selecionados!
               </p>
-              <button className={styles.promotionButton}>
-                🔥 Aproveitar Oferta Agora
-              </button>
+              <button className={styles.promotionButton}>🔥 Aproveitar Oferta Agora</button>
             </div>
-            <div className={styles.promotionBadge}>
-              EXCLUSIVO
-            </div>
+            <div className={styles.promotionBadge}>EXCLUSIVO</div>
           </div>
         )}
 
@@ -114,12 +123,10 @@ export default function BannerButtonTest() {
             <div className={styles.promotionContent}>
               <h4 className={styles.promotionTitle}>📦 Produtos Premium</h4>
               <p className={styles.promotionText}>
-                Explore nossa linha completa de produtos premium. 
-                Qualidade garantida e entrega rápida.
+                Explore nossa linha completa de produtos premium. Qualidade garantida e entrega
+                rápida.
               </p>
-              <button className={styles.standardButton}>
-                Ver Produtos
-              </button>
+              <button className={styles.standardButton}>Ver Produtos</button>
             </div>
           </div>
         )}
@@ -138,4 +145,3 @@ export default function BannerButtonTest() {
     </div>
   );
 }
-

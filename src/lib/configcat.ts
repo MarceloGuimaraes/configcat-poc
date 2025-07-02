@@ -85,3 +85,18 @@ export function createUserObject(
 ): configcat.User {
   return new configcat.User(identifier, email, country, customAttributes);
 }
+
+// Função para forçar atualização imediata das feature flags
+export async function forceRefreshFeatureFlags() {
+  if (!configCatClient) {
+    if (env.DEBUG_MODE) {
+      console.warn('ConfigCat client não configurado. Não é possível forçar atualização.');
+    }
+    return;
+  }
+  try {
+    await configCatClient.forceRefreshAsync();
+  } catch (error) {
+    console.error('Erro ao forçar atualização das feature flags:', error);
+  }
+}

@@ -1,10 +1,10 @@
 'use client';
 
-import React, { useState } from 'react';
-import * as configcat from 'configcat-js';
 import { useABTest } from '@/hooks/useConfigCat';
-import { createUserObject } from '@/lib/configcat';
+import { createUserObject, forceRefreshFeatureFlags } from '@/lib/configcat';
 import { usePersistentUserId } from '@/utils/userUtils';
+import * as configcat from 'configcat-js';
+import React, { useState } from 'react';
 import styles from './ABTestDisplay.module.css';
 
 /**
@@ -64,7 +64,13 @@ export default function ABTestDisplay() {
       <div className={styles.header}>
         <h2 className={styles.title}>Teste A/B - Banner da Home</h2>
         <div className={styles.controls}>
-          <button onClick={refetch} className={styles.refreshButton}>
+          <button
+            onClick={async () => {
+              await forceRefreshFeatureFlags();
+              refetch();
+            }}
+            className={styles.refreshButton}
+          >
             Atualizar
           </button>
           <button onClick={generateNewUser} className={styles.newUserButton}>
@@ -74,8 +80,12 @@ export default function ABTestDisplay() {
       </div>
 
       <div className={styles.userInfo}>
-        <p><strong>ID do Usuário:</strong> {userId}</p>
-        <p><strong>Variação Ativa:</strong> <span className={styles.variant}>{variant}</span></p>
+        <p>
+          <strong>ID do Usuário:</strong> {userId}
+        </p>
+        <p>
+          <strong>Variação Ativa:</strong> <span className={styles.variant}>{variant}</span>
+        </p>
       </div>
 
       {/* Variação A */}
@@ -84,22 +94,16 @@ export default function ABTestDisplay() {
           <div className={styles.bannerContent}>
             <h3 className={styles.bannerTitle}>🎯 Bem-vindo à Versão A!</h3>
             <p className={styles.bannerDescription}>
-              Descubra nossos produtos clássicos e confiáveis. 
-              Uma experiência testada e aprovada por milhares de usuários.
+              Descubra nossos produtos clássicos e confiáveis. Uma experiência testada e aprovada
+              por milhares de usuários.
             </p>
             <div className={styles.bannerActions}>
-              <button className={styles.primaryButton}>
-                Comprar Agora
-              </button>
-              <button className={styles.secondaryButton}>
-                Saiba Mais
-              </button>
+              <button className={styles.primaryButton}>Comprar Agora</button>
+              <button className={styles.secondaryButton}>Saiba Mais</button>
             </div>
           </div>
           <div className={styles.bannerImage}>
-            <div className={styles.placeholder}>
-              📦 Produto Clássico
-            </div>
+            <div className={styles.placeholder}>📦 Produto Clássico</div>
           </div>
         </div>
       )}
@@ -110,22 +114,16 @@ export default function ABTestDisplay() {
           <div className={styles.bannerContent}>
             <h3 className={styles.bannerTitle}>🚀 Explore a Versão B!</h3>
             <p className={styles.bannerDescription}>
-              Conheça as últimas inovações e tecnologias de ponta. 
-              Seja um dos primeiros a experimentar o futuro!
+              Conheça as últimas inovações e tecnologias de ponta. Seja um dos primeiros a
+              experimentar o futuro!
             </p>
             <div className={styles.bannerActions}>
-              <button className={styles.primaryButton}>
-                Ver Novidades
-              </button>
-              <button className={styles.secondaryButton}>
-                Pré-venda
-              </button>
+              <button className={styles.primaryButton}>Ver Novidades</button>
+              <button className={styles.secondaryButton}>Pré-venda</button>
             </div>
           </div>
           <div className={styles.bannerImage}>
-            <div className={styles.placeholder}>
-              ⚡ Inovação
-            </div>
+            <div className={styles.placeholder}>⚡ Inovação</div>
           </div>
         </div>
       )}
@@ -142,4 +140,3 @@ export default function ABTestDisplay() {
     </div>
   );
 }
-
