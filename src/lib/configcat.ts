@@ -8,6 +8,11 @@ const isValidSdkKey = (key: string): boolean => {
 
 // Configuração do cliente ConfigCat
 export const configCatClient = (() => {
+  // Garante que o cliente ConfigCat seja inicializado apenas no lado do cliente (navegador)
+  if (typeof window === 'undefined') {
+    return null;
+  }
+
   if (!env.CONFIGCAT_SDK_KEY) {
     console.warn('ConfigCat SDK Key não configurada. Feature flags usarão valores padrão.');
     return null;
@@ -19,19 +24,15 @@ export const configCatClient = (() => {
   }
 
   try {
-    return configcat.getClient(
-      env.CONFIGCAT_SDK_KEY,
-      configcat.PollingMode.AutoPoll,
-      {
-        pollIntervalSeconds: 30, // Verifica atualizações a cada 30 segundos
-        requestTimeoutMs: 3000,  // Timeout para requisições (3 segundos)
-        logger: configcat.createConsoleLogger(
-          env.DEBUG_MODE 
-            ? configcat.LogLevel.Info // Logs detalhados em desenvolvimento
-            : configcat.LogLevel.Warn  // Logs mínimos em produção
-        ),
-      }
-    );
+    return configcat.getClient(env.CONFIGCAT_SDK_KEY, configcat.PollingMode.AutoPoll, {
+      pollIntervalSeconds: 30, // Verifica atualizações a cada 30 segundos
+      requestTimeoutMs: 3000, // Timeout para requisições (3 segundos)
+      logger: configcat.createConsoleLogger(
+        env.DEBUG_MODE
+          ? configcat.LogLevel.Info // Logs detalhados em desenvolvimento
+          : configcat.LogLevel.Warn // Logs mínimos em produção
+      ),
+    });
   } catch (error) {
     console.warn('Erro ao criar cliente ConfigCat:', error);
     return null;
@@ -59,17 +60,15 @@ export async function getFeatureFlag<K extends keyof FeatureFlags>(
 ): Promise<FeatureFlags[K]> {
   if (!configCatClient) {
     if (env.DEBUG_MODE) {
-      console.warn(`ConfigCat client não configurado. Usando valor padrão para ${String(flagKey)}.`);
+      console.warn(
+        `ConfigCat client não configurado. Usando valor padrão para ${String(flagKey)}.`
+      );
     }
     return DEFAULT_FLAGS[flagKey];
   }
 
   try {
-    const value = await configCatClient.getValueAsync(
-      flagKey,
-      DEFAULT_FLAGS[flagKey],
-      userObject
-    );
+    const value = await configCatClient.getValueAsync(flagKey, DEFAULT_FLAGS[flagKey], userObject);
     return value as FeatureFlags[K];
   } catch (error) {
     console.error(`Erro ao obter feature flag ${String(flagKey)}:`, error);
@@ -86,4 +85,3 @@ export function createUserObject(
 ): configcat.User {
   return new configcat.User(identifier, email, country, customAttributes);
 }
-
